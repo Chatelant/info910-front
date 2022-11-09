@@ -21,8 +21,11 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Docker
 
 ```bash
-docker build . -t info910/front-app
+# Lancement avec docker compose
+docker compose up -d
 ```
 ```bash
+# Build du conteneur et run à la main
+docker build . -t info910/front-app
 docker run -p 8080:80 -d info910/front-app
 ```
