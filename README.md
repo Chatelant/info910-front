@@ -1,23 +1,6 @@
-# MyApp
+# info910-application-web
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.8.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
+Application web simple pour vérifier si on est capable d'appeler l'api associée.
 ## Docker
 
 ```bash
@@ -28,4 +11,32 @@ docker compose up -d
 # Build du conteneur et run à la main
 docker build . -t info910/front-app
 docker run -p 8080:80 -d info910/front-app
+```
+## Kubernetes
+
+Veuillez executer les commandes ci-dessous dans la section "Deploiement via yml".
+Il se peut que la première commande doive etre utilisée 2x pour que la seconde fonctionne.
+
+### Deploiement via yml
+```bash
+# Execution des scripts yml
+kubectl apply -f .\deploiement\
+
+# Port forwarding pour que le navigateur ai accès à l'app web
+kubectl port-forward service/info910-app-web 8080:80
+```
+
+### Deploiement via cmd
+```bash
+kubectl create deployment info910-app-web --image=ghcr.io/chatelant/info910-front:main
+kubectl expose deployment info910-app-web --type=NodePort --port=80
+kubectl get services info910-app-web 
+kubectl port-forward service/info910-app-web 8080:80
+```
+
+## Generation des yml
+Commandes utilisées pour générer les yml.
+```bash
+kubectl create deployment info910-app-web --image=ghcr.io/chatelant/info910-front:main --dry-run=client -o yaml > .\deploiement\create.yml
+kubectl expose deployment info910-app-web --type=NodePort --port=80 --dry-run=client -o yaml > .\deploiement\serve.yml
 ```
